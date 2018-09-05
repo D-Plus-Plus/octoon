@@ -7,19 +7,27 @@ namespace octoon
 
 	ScriptComponent::ScriptComponent() noexcept
 	{
+		classname_ = this->type_name();
+		classname_init_ = "var " + classname_ + "= new main()";
+		classname_onFrameBegin_ = classname_ + ".OnUpdateBegin()";
+		classname_onFrame_ = classname_ + ".OnUpdate()";
+		classname_onFrameEnd_ = classname_ + ".OnUpdateEnd()";
+		classname_onGui_ = classname_ + ".OnGui()";
 	}
 
 	ScriptComponent::ScriptComponent(std::string&& script) noexcept
+		: ScriptComponent()
 	{
 		this->setScript(std::move(script));
 	}
 
 	ScriptComponent::ScriptComponent(const std::string& script) noexcept
+		: ScriptComponent()
 	{
 		this->setScript(script);
 	}
 
-	void 
+	void
 	ScriptComponent::setScript(std::string&& script) noexcept
 	{
 		script_ = std::move(script);
@@ -57,10 +65,7 @@ namespace octoon
 		auto j = js_getstate();
 		if (j)
 		{
-			js_getglobal(j, "OnUpdateBegin");
-			js_pushnull(j);
-			js_call(j, 0);
-			js_pop(j, 1);
+			js_dostring(j, classname_onFrameBegin_.c_str());
 		}
 	}
 
@@ -70,40 +75,31 @@ namespace octoon
 		auto j = js_getstate();
 		if (j)
 		{
-			js_getglobal(j, "OnUpdate");
-			js_pushnull(j);
-			js_call(j, 0);
-			js_pop(j, 1);
+			js_dostring(j, classname_onFrame_.c_str());
 		}
 	}
 
-	void 
+	void
 	ScriptComponent::onFrameEnd() noexcept
 	{
 		auto j = js_getstate();
 		if (j)
 		{
-			js_getglobal(j, "OnUpdateEnd");
-			js_pushnull(j);
-			js_call(j, 0);
-			js_pop(j, 1);
+			js_dostring(j, classname_onFrameEnd_.c_str());
 		}
 	}
 
-	void 
+	void
 	ScriptComponent::onGui() noexcept
 	{
 		auto j = js_getstate();
 		if (j)
 		{
-			js_getglobal(j, "OnGui");
-			js_pushnull(j);
-			js_call(j, 0);
-			js_pop(j, 1);
+			js_dostring(j, classname_onGui_.c_str());
 		}
 	}
 
-	void 
+	void
 	ScriptComponent::updateScript() noexcept
 	{
 		if (script_.empty() || !this->getGameObject())
@@ -113,25 +109,35 @@ namespace octoon
 		if (j)
 		{
 			js_dostring(j, script_.c_str());
+			js_dostring(j, classname_init_.c_str());
 
-			js_getglobal(j, "OnUpdateBegin");
-			js_getglobal(j, "OnUpdate");
-			js_getglobal(j, "OnUpdateEnd");
-			js_getglobal(j, "OnGui");
+			js_getglobal(j, classname_.c_str());
+			if (js_isobject(j, -1))
+			{
+				if (js_hasproperty(j, -1, "OnUpdateBegin"))
+				{
+					this->addComponentDispatch(GameDispatchType::FrameBegin);
+					js_pop(j, 1);
+				}
 
-			if (!js_isundefined(j, -4))
-				this->addComponentDispatch(GameDispatchType::FrameBegin);
+				if (js_hasproperty(j, -1, "OnUpdate"))
+				{
+					this->addComponentDispatch(GameDispatchType::Frame);
+					js_pop(j, 1);
+				}
 
-			if (!js_isundefined(j, -3))
-				this->addComponentDispatch(GameDispatchType::Frame);
+				if (js_hasproperty(j, -1, "OnUpdateEnd"))
+				{
+					this->addComponentDispatch(GameDispatchType::FrameEnd);
+					js_pop(j, 1);
+				}
 
-			if (!js_isundefined(j, -2))
-				this->addComponentDispatch(GameDispatchType::FrameEnd);
-
-			if (!js_isundefined(j, -1))
-				this->addComponentDispatch(GameDispatchType::Gui);
-
-			js_pop(j, 4);
+				if (js_hasproperty(j, -1, "OnGui"))
+				{
+					this->addComponentDispatch(GameDispatchType::Gui);
+					js_pop(j, 1);
+				}
+			}
 		}
 	}
 

@@ -38,6 +38,12 @@ namespace octoon
 
 	private:
 		std::string script_;
+		std::string classname_;
+		std::string classname_init_;
+		std::string classname_onFrameBegin_;
+		std::string classname_onFrame_;
+		std::string classname_onFrameEnd_;
+		std::string classname_onGui_;
 	};
 }
 

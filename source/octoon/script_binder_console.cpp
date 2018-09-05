@@ -14,7 +14,7 @@ namespace octoon
 	{
 	}
 
-	void 
+	void
 	ScriptBinderConsole::bind(js_State* j) noexcept
 	{
 		js_getglobal(j, "Object");
@@ -43,14 +43,14 @@ namespace octoon
 		js_pop(j, 1);
 	}
 
-	void 
+	void
 	ScriptBinderConsole::log(js_State* j) noexcept
 	{
-		const char* msg = js_tostring(j, 1);
-		std::cout << msg << std::endl;
+		if (!js_isundefined(j, 1))
+			std::cout << js_tostring(j, 1) << std::endl;
 	}
 
-	void 
+	void
 	ScriptBinderConsole::cls(js_State *j) noexcept
 	{
 #if defined(_WINDOWS)
@@ -60,7 +60,7 @@ namespace octoon
 #endif
 	}
 
-	void 
+	void
 	ScriptBinderConsole::count(js_State *j) noexcept
 	{
 		const char* msg = js_tostring(j, 1);
