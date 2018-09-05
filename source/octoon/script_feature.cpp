@@ -32,6 +32,8 @@ namespace octoon
 
 		for (auto& it : binders)
 			it->bind(state_);
+
+		js_setstate(state_);
 	}
 
 	void

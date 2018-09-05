@@ -40,6 +40,7 @@ namespace octoon
 			js_defproperty(j, -2, "count", JS_DONTENUM);
 		}
 		js_setglobal(j, "console");
+		js_pop(j, 1);
 	}
 
 	void 

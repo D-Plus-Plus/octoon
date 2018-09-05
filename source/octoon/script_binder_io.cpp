@@ -29,6 +29,7 @@ namespace octoon
 		}
 		js_newcconstructor(J, new_File, new_File, "File", 1);
 		js_defglobal(J, "File", JS_DONTENUM);
+		js_pop(J, 1);
 	}
 
 	void 

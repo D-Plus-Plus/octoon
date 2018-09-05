@@ -10,12 +10,16 @@ namespace octoon
 		OctoonDeclareSubClass(ScriptComponent, GameComponent)
 	public:
 		ScriptComponent() noexcept;
-		ScriptComponent(const GameObjectPtr& camera) noexcept;
+		ScriptComponent(const GameObjectPtr& script) noexcept;
 
-		void setScript(const std::string& camera) noexcept;
+		void setScript(std::string&& script) noexcept;
+		void setScript(const std::string& script) noexcept;
 		const std::string& getScript() const noexcept;
 
 		octoon::GameComponentPtr clone() const noexcept override;
+
+	private:
+		void updateScript() noexcept;
 
 	private:
 		void onActivate() noexcept override;
@@ -24,6 +28,8 @@ namespace octoon
 		void onFrameBegin() noexcept override;
 		void onFrame() noexcept override;
 		void onFrameEnd() noexcept override;
+
+		void onGui() noexcept override;
 
 	private:
 		ScriptComponent(const ScriptComponent&) = delete;

@@ -6,14 +6,26 @@ namespace octoon
 	OctoonImplementSubClass(ScriptComponent, GameComponent, "ScriptComponent")
 
 	ScriptComponent::ScriptComponent() noexcept
-		: script_(R"(console.count("count"))")
+		: script_(R"(function OnUpdate() { console.count("count") })")
 	{
+	}
+
+	void 
+	ScriptComponent::setScript(std::string&& script) noexcept
+	{
+		script_ = std::move(script);
+
+		if (this->getActive())
+			this->updateScript();
 	}
 
 	void
 	ScriptComponent::setScript(const std::string& script) noexcept
 	{
 		script_ = script;
+
+		if (this->getActive())
+			this->updateScript();
 	}
 
 	const std::string&
@@ -25,7 +37,7 @@ namespace octoon
 	void
 	ScriptComponent::onActivate() noexcept
 	{
-		this->addComponentDispatch(GameDispatchType::FrameBegin);
+		this->updateScript();
 	}
 
 	void
@@ -39,17 +51,80 @@ namespace octoon
 	{
 		auto j = js_getstate();
 		if (j)
-			js_dostring(j, script_.c_str());
+		{
+			js_getglobal(j, "OnUpdateBegin");
+			js_pushnull(j);
+			js_call(j, 0);
+			js_pop(j, 1);
+		}
 	}
 
 	void
 	ScriptComponent::onFrame() noexcept
 	{
+		auto j = js_getstate();
+		if (j)
+		{
+			js_getglobal(j, "OnUpdate");
+			js_pushnull(j);
+			js_call(j, 0);
+			js_pop(j, 1);
+		}
 	}
 
 	void 
 	ScriptComponent::onFrameEnd() noexcept
 	{
+		auto j = js_getstate();
+		if (j)
+		{
+			js_getglobal(j, "OnUpdateEnd");
+			js_pushnull(j);
+			js_call(j, 0);
+			js_pop(j, 1);
+		}
+	}
+
+	void 
+	ScriptComponent::onGui() noexcept
+	{
+		auto j = js_getstate();
+		if (j)
+		{
+			js_getglobal(j, "OnGui");
+			js_pushnull(j);
+			js_call(j, 0);
+			js_pop(j, 1);
+		}
+	}
+
+	void 
+	ScriptComponent::updateScript() noexcept
+	{
+		auto j = js_getstate();
+		if (j)
+		{
+			js_dostring(j, script_.c_str());
+
+			js_getglobal(j, "OnUpdateBegin");
+			js_getglobal(j, "OnUpdate");
+			js_getglobal(j, "OnUpdateEnd");
+			js_getglobal(j, "OnGui");
+
+			if (!js_isundefined(j, -4))
+				this->addComponentDispatch(GameDispatchType::FrameBegin);
+
+			if (!js_isundefined(j, -3))
+				this->addComponentDispatch(GameDispatchType::Frame);
+
+			if (!js_isundefined(j, -2))
+				this->addComponentDispatch(GameDispatchType::FrameEnd);
+
+			if (!js_isundefined(j, -1))
+				this->addComponentDispatch(GameDispatchType::Gui);
+
+			js_pop(j, 4);
+		}
 	}
 
 	GameComponentPtr
