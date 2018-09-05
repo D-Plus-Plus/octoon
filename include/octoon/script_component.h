@@ -10,7 +10,8 @@ namespace octoon
 		OctoonDeclareSubClass(ScriptComponent, GameComponent)
 	public:
 		ScriptComponent() noexcept;
-		ScriptComponent(const GameObjectPtr& script) noexcept;
+		ScriptComponent(std::string&& script) noexcept;
+		ScriptComponent(const std::string& script) noexcept;
 
 		void setScript(std::string&& script) noexcept;
 		void setScript(const std::string& script) noexcept;

@@ -6,26 +6,31 @@ namespace octoon
 	OctoonImplementSubClass(ScriptComponent, GameComponent, "ScriptComponent")
 
 	ScriptComponent::ScriptComponent() noexcept
-		: script_(R"(function OnUpdate() { console.count("count") })")
 	{
+	}
+
+	ScriptComponent::ScriptComponent(std::string&& script) noexcept
+	{
+		this->setScript(std::move(script));
+	}
+
+	ScriptComponent::ScriptComponent(const std::string& script) noexcept
+	{
+		this->setScript(script);
 	}
 
 	void 
 	ScriptComponent::setScript(std::string&& script) noexcept
 	{
 		script_ = std::move(script);
-
-		if (this->getActive())
-			this->updateScript();
+		this->updateScript();
 	}
 
 	void
 	ScriptComponent::setScript(const std::string& script) noexcept
 	{
 		script_ = script;
-
-		if (this->getActive())
-			this->updateScript();
+		this->updateScript();
 	}
 
 	const std::string&
@@ -101,6 +106,9 @@ namespace octoon
 	void 
 	ScriptComponent::updateScript() noexcept
 	{
+		if (script_.empty() || !this->getGameObject())
+			return;
+
 		auto j = js_getstate();
 		if (j)
 		{
