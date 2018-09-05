@@ -38,7 +38,8 @@ namespace octoon
 	ScriptComponent::onFrameBegin() noexcept
 	{
 		auto j = js_getstate();
-		js_dostring(j, script_.c_str());
+		if (j)
+			js_dostring(j, script_.c_str());
 	}
 
 	void
@@ -56,6 +57,7 @@ namespace octoon
 	{
 		auto instance = std::make_shared<ScriptComponent>();
 		instance->setName(this->getName());
+		instance->setScript(this->getScript());
 		return instance;
 	}
 }
