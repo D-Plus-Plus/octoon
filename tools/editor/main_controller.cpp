@@ -12,8 +12,6 @@
 #include "controllers/file_controller.h"
 #include "controllers/edit_controller.h"
 
-#include <octoon/octoon.h>
-
 namespace octoon
 {
 	namespace editor

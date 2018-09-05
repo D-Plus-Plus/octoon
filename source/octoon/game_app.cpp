@@ -36,6 +36,10 @@
 #	include <octoon/video_feature.h>
 #endif
 
+#if OCTOON_FEATURE_SCRIPT_ENABLE
+#	include <octoon/script_feature.h>
+#endif
+
 namespace octoon
 {
 	OctoonImplementSingleton(GameApp)
@@ -104,6 +108,10 @@ namespace octoon
 
 #if OCTOON_FEATURE_INPUT_ENABLE
 		this->addFeature(std::make_unique<InputFeature>(hwnd));
+#endif
+
+#if OCTOON_FEATURE_SCRIPT_ENABLE
+		this->addFeature(std::make_unique<ScriptFeature>());
 #endif
 
 #if OCTOON_FEATURE_BASE_ENABLE
