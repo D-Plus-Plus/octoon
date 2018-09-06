@@ -137,8 +137,8 @@ namespace octoon
 				{
 					this->addComponentDispatch(GameDispatchType::FrameBegin);
 
-					std::string classname_onFrameBegin_ = classname_ + ".OnUpdateBegin()";
-					js_onUpdateBegin_ = jsC_compile(j, jsP_parse(j, "[string]", classname_onFrameBegin_.c_str()));
+					std::string method = classname_ + ".OnUpdateBegin()";
+					js_onUpdateBegin_ = jsC_compile(j, jsP_parse(j, "[string]", method.c_str()));
 					jsP_freeparse(j);
 					js_pop(j, 1);
 				}
@@ -147,8 +147,8 @@ namespace octoon
 				{
 					this->addComponentDispatch(GameDispatchType::Frame);
 
-					std::string classname_onFrame_ = classname_ + ".OnUpdate()";
-					js_onUpdate_ = jsC_compile(j, jsP_parse(j, "[string]", classname_onFrame_.c_str()));
+					std::string method = classname_ + ".OnUpdate()";
+					js_onUpdate_ = jsC_compile(j, jsP_parse(j, "[string]", method.c_str()));
 					jsP_freeparse(j);
 					js_pop(j, 1);
 				}
@@ -157,8 +157,8 @@ namespace octoon
 				{
 					this->addComponentDispatch(GameDispatchType::FrameEnd);
 
-					std::string classname_onFrameEnd_ = classname_ + ".OnUpdateEnd()";
-					js_onUpdateEnd_ = jsC_compile(j, jsP_parse(j, "[string]", classname_onFrameEnd_.c_str()));
+					std::string method = classname_ + ".OnUpdateEnd()";
+					js_onUpdateEnd_ = jsC_compile(j, jsP_parse(j, "[string]", method.c_str()));
 					jsP_freeparse(j);
 					js_pop(j, 1);
 				}
@@ -167,8 +167,8 @@ namespace octoon
 				{
 					this->addComponentDispatch(GameDispatchType::Gui);
 
-					std::string classname_onGui_ = classname_ + ".OnGui()";
-					js_onGui_ = jsC_compile(j, jsP_parse(j, "[string]", classname_onGui_.c_str()));
+					std::string method = classname_ + ".OnGui()";
+					js_onGui_ = jsC_compile(j, jsP_parse(j, "[string]", method.c_str()));
 					jsP_freeparse(j);
 					js_pop(j, 1);
 				}
