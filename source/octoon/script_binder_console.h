@@ -4,6 +4,7 @@
 #include <octoon/script_binder.h>
 #include <map>
 #include <string>
+#include <chrono>
 
 namespace octoon
 {
@@ -19,9 +20,12 @@ namespace octoon
 		static void log(js_State *j) noexcept;
 		static void cls(js_State *j) noexcept;
 		static void count(js_State *j) noexcept;
+		static void time(js_State *j) noexcept;
+		static void timeEnd(js_State *j) noexcept;
 
 	private:
 		static thread_local std::map<std::string, std::uint32_t> count_;
+		static thread_local std::map<std::string, std::chrono::time_point<std::chrono::high_resolution_clock>> time_;
 	};
 }
 
