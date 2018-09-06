@@ -3,6 +3,8 @@
 
 #include <octoon/game_component.h>
 
+struct js_Function;
+
 namespace octoon
 {
 	class OCTOON_EXPORT ScriptComponent final : public GameComponent
@@ -38,12 +40,11 @@ namespace octoon
 
 	private:
 		std::string script_;
-		std::string classname_;
-		std::string classname_init_;
-		std::string classname_onFrameBegin_;
-		std::string classname_onFrame_;
-		std::string classname_onFrameEnd_;
-		std::string classname_onGui_;
+
+		js_Function* js_onUpdateBegin_;
+		js_Function* js_onUpdate_;
+		js_Function* js_onUpdateEnd_;
+		js_Function* js_onGui_;
 	};
 }
 
