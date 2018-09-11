@@ -87,7 +87,7 @@ namespace octoon
 		scriptEnv_->get("OnUpdateBegin", onUpdateBegin_);
 		scriptEnv_->get("OnUpdate", onUpdate_);
 		scriptEnv_->get("OnUpdateEnd", onUpdateEnd_);
-		scriptEnv_->get("Gui", onGui_);
+		scriptEnv_->get("OnGui", onGui_);
 
 		if (onUpdateBegin_)
 			this->addComponentDispatch(GameDispatchType::FrameBegin);
