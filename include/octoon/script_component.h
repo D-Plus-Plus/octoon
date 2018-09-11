@@ -2,8 +2,7 @@
 #define OCTOON_SCRIPT_COMPONENT_H_
 
 #include <octoon/game_component.h>
-
-struct js_Function;
+#include <octoon/script/script_env.h>
 
 namespace octoon
 {
@@ -40,11 +39,13 @@ namespace octoon
 
 	private:
 		std::string script_;
+		
+		std::function<void()> onUpdateBegin_;
+		std::function<void()> onUpdate_;
+		std::function<void()> onUpdateEnd_;
+		std::function<void()> onGui_;
 
-		js_Function* js_onUpdateBegin_;
-		js_Function* js_onUpdate_;
-		js_Function* js_onUpdateEnd_;
-		js_Function* js_onGui_;
+		std::shared_ptr<script::ScriptEnv> scriptEnv_;
 	};
 }
 

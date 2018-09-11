@@ -4,7 +4,6 @@ SET(HEADER_PATH ${OCTOON_PATH_HEADER})
 SET(SOURCE_PATH ${OCTOON_PATH_SOURCE}/${LIB_NAME})
 
 INCLUDE_DIRECTORIES(${OCTOON_PATH_DEPENDENCIES}/json)
-INCLUDE_DIRECTORIES(${OCTOON_PATH_DEPENDENCIES}/mujs)
 
 SET(OCTOON_LIST
 	${SOURCE_PATH}/game_app.cpp
@@ -116,14 +115,6 @@ SET(SCRIPT_FEATURES_LIST
 	${SOURCE_PATH}/script_feature.cpp
 	${HEADER_PATH}/script_component.h
 	${SOURCE_PATH}/script_component.cpp
-	${SOURCE_PATH}/script_context.h
-	${SOURCE_PATH}/script_context.cpp
-	${HEADER_PATH}/script_binder.h
-	${SOURCE_PATH}/script_binder.cpp
-	${SOURCE_PATH}/script_binder_io.h
-	${SOURCE_PATH}/script_binder_io.cpp
-	${SOURCE_PATH}/script_binder_console.h
-	${SOURCE_PATH}/script_binder_console.cpp
 )
 SOURCE_GROUP("system\\script" FILES ${SCRIPT_FEATURES_LIST})
 
@@ -186,7 +177,7 @@ IF(OCTOON_FEATURE_UI_ENABLE)
 ENDIF()
 
 IF(OCTOON_FEATURE_SCRIPT_ENABLE)
-	TARGET_LINK_LIBRARIES(${LIB_NAME} PRIVATE mujs)
+	TARGET_LINK_LIBRARIES(${LIB_NAME} PUBLIC octoon-script)
 ENDIF()
 
 SET_TARGET_ATTRIBUTE(${LIB_NAME} "octoon")
