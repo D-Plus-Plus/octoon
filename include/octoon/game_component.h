@@ -42,8 +42,8 @@ namespace octoon
 		void getComponentsInChildren(const runtime::Rtti& type, GameComponents& components) const noexcept;
 
 		const GameComponents& getComponents() const noexcept;
-
-		void sendMessage(const std::string& event, const runtime::any& data = nullptr) noexcept;
+		
+		void sendMessage(const std::string&event, const runtime::any& data = nullptr) noexcept;
 		void sendMessageUpwards(const std::string& event, const runtime::any& data = nullptr) noexcept;
 		void sendMessageDownwards(const std::string& event, const runtime::any& data = nullptr) noexcept;
 		void addMessageListener(const std::string& event, std::function<void(const runtime::any&)> listener) noexcept;

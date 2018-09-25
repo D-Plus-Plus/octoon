@@ -233,6 +233,7 @@ namespace octoon
 	void
 	GameComponent::onDeactivate() noexcept
 	{
+		this->removeComponentDispatchs();
 	}
 
 	void

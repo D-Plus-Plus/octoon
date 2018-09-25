@@ -47,7 +47,6 @@ namespace octoon
 		MainController::onDeactivate() noexcept
 		{
 			main_.reset();
-			object_.reset();
 		}
 
 		GameComponentPtr 
