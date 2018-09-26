@@ -1,9 +1,7 @@
 #ifndef OCTOON_MATERIAL_H_
 #define OCTOON_MATERIAL_H_
 
-#include <octoon/video/render_types.h>
 #include <octoon/video/material_tech.h>
-#include <octoon/graphics/graphics_types.h>
 
 namespace octoon
 {

@@ -3,6 +3,8 @@
 
 #include <octoon/runtime/rtti.h>
 #include <octoon/runtime/rtti_interface.h>
+#include <octoon/video/render_types.h>
+#include <octoon/graphics/graphics_types.h>
 
 namespace octoon
 {
