@@ -11,6 +11,9 @@
 
 #include "controllers/file_controller.h"
 #include "controllers/edit_controller.h"
+#include "controllers/camera_controller.h"
+
+#include <octoon/script_component.h>
 
 namespace octoon
 {
@@ -41,6 +44,10 @@ namespace octoon
 
 			main_->addComponent<FileController>();
 			main_->addComponent<EditController>();
+			main_->addComponent<CameraController>();
+
+			main_->addComponent<ScriptComponent>(R"( require("console"); function OnUpdate() console.time("Script 1") end)");
+			main_->addComponent<ScriptComponent>(R"( require("console"); function OnUpdate() console.timeEnd("Script 1") end)");
 		}
 
 		void

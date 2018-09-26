@@ -22,8 +22,10 @@ namespace octoon
 
 			void onGui() noexcept override;
 
+			void onCameraSelected(const runtime::any& data) noexcept;
+
 		private:
-			GameObjectPtr camera_;
+			GameObject* selectedCamera_;
 
 			bool isShowedCameraWindow_;
 

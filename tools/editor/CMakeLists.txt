@@ -32,6 +32,8 @@ SET(VIEWS_LIST
 SOURCE_GROUP("editor\\views" FILES ${VIEWS_LIST})
 
 SET(CONTROLLERS_LIST
+	${SOURCE_PATH}/controllers/camera_controller.h
+	${SOURCE_PATH}/controllers/camera_controller.cpp
 	${SOURCE_PATH}/controllers/file_controller.h
 	${SOURCE_PATH}/controllers/file_controller.cpp
 	${SOURCE_PATH}/controllers/edit_controller.h
