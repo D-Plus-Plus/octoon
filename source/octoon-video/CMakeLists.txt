@@ -4,6 +4,8 @@ SET(LIB_OUTNAME octoon-${LIB_NAME})
 SET(HEADER_PATH ${OCTOON_PATH_HEADER}/${LIB_NAME})
 SET(SOURCE_PATH ${OCTOON_PATH_SOURCE}/${LIB_OUTNAME})
 
+INCLUDE_DIRECTORIES(${OCTOON_PATH_DEPENDENCIES}/${LIB_NAME}/include)
+
 SET(VIDEO_GRAPHICS_LIST
 	${HEADER_PATH}/render_object.h
 	${SOURCE_PATH}/render_object.cpp
@@ -30,6 +32,11 @@ SOURCE_GROUP(${LIB_NAME}\\camera  FILES ${VIDEO_CAMERA_LIST})
 SET(VIDEO_MATERIAL_LIST
 	${HEADER_PATH}/material.h
 	${SOURCE_PATH}/material.cpp
+	${HEADER_PATH}/material_types.h
+	${HEADER_PATH}/material_tech.h
+	${SOURCE_PATH}/material_tech.cpp
+	${HEADER_PATH}/material_pass.h
+	${SOURCE_PATH}/material_pass.cpp
 	${HEADER_PATH}/phong_material.h
 	${SOURCE_PATH}/phong_material.cpp
 	${HEADER_PATH}/blinn_material.h
@@ -81,6 +88,7 @@ ELSE()
 	)
 ENDIF()
 
+TARGET_LINK_LIBRARIES(${LIB_OUTNAME} PRIVATE FX11)
 TARGET_LINK_LIBRARIES(${LIB_OUTNAME} PRIVATE octoon-runtime)
 TARGET_LINK_LIBRARIES(${LIB_OUTNAME} PRIVATE octoon-graphics)
 

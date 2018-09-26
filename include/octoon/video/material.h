@@ -2,6 +2,7 @@
 #define OCTOON_MATERIAL_H_
 
 #include <octoon/video/render_types.h>
+#include <octoon/video/material_tech.h>
 #include <octoon/graphics/graphics_types.h>
 
 namespace octoon
@@ -14,11 +15,19 @@ namespace octoon
 			Material() noexcept;
 			Material(std::string&& name) noexcept;
 			Material(const std::string& name) noexcept;
-			~Material() noexcept;
+			virtual ~Material() noexcept;
 
 			void setName(std::string&& name) noexcept;
 			void setName(const std::string& name) noexcept;
 			const std::string& getName() const noexcept;
+
+			void addTech(MaterialTechPtr& pass);
+			void addTech(MaterialTechPtr&& pass);
+			void removeTech(MaterialTechPtr& pass);
+			void removeTech(MaterialTechPtr&& pass);
+			MaterialTechPtr getTech(const std::string& name) noexcept;
+			MaterialTechPtr getTech(std::size_t index) noexcept;
+			const MaterialTechs& getAllTech() const noexcept;
 
 			virtual void setTransform(const math::float4x4& vp) noexcept = 0;
 			virtual void setViewProjection(const math::float4x4& vp) noexcept = 0;
@@ -36,6 +45,7 @@ namespace octoon
 
 		private:
 			std::string _name;
+			MaterialTechs _techs;
 		};
 	}
 }
