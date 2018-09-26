@@ -1,5 +1,6 @@
 #include <octoon/video/material.h>
 #include <octoon/graphics/graphics.h>
+#include <d3dx11effect.h>
 
 namespace octoon
 {
@@ -98,6 +99,11 @@ namespace octoon
 		Material::getAllTech() const noexcept
 		{
 			return _techs;
+		}
+
+		void 
+		Material::load(const std::string& filename) noexcept
+		{
 		}
 
 		graphics::GraphicsUniformSetPtr 

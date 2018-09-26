@@ -27,6 +27,8 @@ namespace octoon
 			MaterialTechPtr getTech(std::size_t index) noexcept;
 			const MaterialTechs& getAllTech() const noexcept;
 
+			void load(const std::string& filename) noexcept;
+
 			virtual void setTransform(const math::float4x4& vp) noexcept = 0;
 			virtual void setViewProjection(const math::float4x4& vp) noexcept = 0;
 
