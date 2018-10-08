@@ -104,12 +104,10 @@ namespace octoon
 		gameObject_ = gameobj;
 	}
 
-	GameObjectPtr
+	GameObject*
 	GameComponent::getGameObject() const noexcept
 	{
-		if (gameObject_)
-			return gameObject_->cast_pointer<GameObject>();
-		return nullptr;
+		return gameObject_;
 	}
 
 	void

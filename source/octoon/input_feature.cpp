@@ -73,7 +73,9 @@ namespace octoon
 	InputFeature::onInputEvent(const runtime::any& data) noexcept
 	{
 		assert(input_);
-		input_->sendInputEvent(runtime::any_cast<input::InputEvent>(data));
+
+		if (data.type() == typeid(input::InputEvent))
+			input_->sendInputEvent(runtime::any_cast<input::InputEvent>(data));
 	}
 
 	void
