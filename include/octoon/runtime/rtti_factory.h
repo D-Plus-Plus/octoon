@@ -11,8 +11,9 @@ namespace octoon
 {
 	namespace runtime
 	{
-		class OCTOON_EXPORT RttiFactory final : public Singleton<RttiFactory>
+		class OCTOON_EXPORT RttiFactory final
 		{
+			OctoonDeclareSingleton(RttiFactory)
 		public:
 			RttiFactory() = default;
 			~RttiFactory() = default;

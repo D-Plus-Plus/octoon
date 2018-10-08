@@ -4,6 +4,8 @@ namespace octoon
 {
 	namespace runtime
 	{
+		OctoonImplementSingleton(RttiFactory)
+
 		bool
 		RttiFactory::open() noexcept
 		{
