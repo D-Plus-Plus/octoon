@@ -10,6 +10,7 @@
 #include <octoon/video/blinn_material.h>
 #include <octoon/video/phong_material.h>
 #include <octoon/video/ggx_material.h>
+#include <octoon/video/basic_material.h>
 
 #include <octoon/input_feature.h>
 

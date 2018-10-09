@@ -32,6 +32,7 @@ namespace octoon
 		GameObjectPtr createSphere(float radius, std::uint32_t widthSegments = 32, std::uint32_t heightSegments = 24, float phiStart = 0, float phiLength = math::PI_2, float thetaStart = 0, float thetaLength = math::PI) noexcept;
 		GameObjectPtr createVolumes(float fovy, float znear, float zfar) noexcept;
 		GameObjectPtr createCone(float radius, float height, std::uint32_t segments = 32, float thetaStart = 0, float thetaLength = math::PI_2) noexcept;
+		GameObjectPtr createCylinder(float topRadius, float bottomRadius, float height, std::uint32_t segments = 32, float thetaStart = 0, float thetaLength = math::PI_2) noexcept;
 		GameObjectPtr createText(const wchar_t* text, std::uint16_t fontsize = 24, const char* fontPath = "../../system/fonts/DroidSansFallback.ttf") noexcept;
 		GameObjectPtr createText(const char* u8str, std::uint16_t fontsize = 24, const char* fontPath = "../../system/fonts/DroidSansFallback.ttf") noexcept;
 		GameObjectPtr createModel(const std::string& path, bool cache = true) except;
@@ -42,6 +43,7 @@ namespace octoon
 		GameObjectPtr createSpriteSquare(float w, float h) except;
 
 		graphics::GraphicsTexturePtr createTexture(const std::string& path, bool cache = true) except;
+		graphics::GraphicsSamplerPtr createSampler(graphics::GraphicsSamplerWrap wrap, graphics::GraphicsSamplerFilter filter, graphics::GraphicsSamplerAnis anis = graphics::GraphicsSamplerAnis::Anis0) except;
 
 	private:
 		using Prefabs = std::map<std::string, GameObjectPtr>;

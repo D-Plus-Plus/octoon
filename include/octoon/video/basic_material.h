@@ -12,7 +12,7 @@ namespace octoon
 		{
 		public:
 			BasicMaterial() except;
-			BasicMaterial(const graphics::GraphicsTexturePtr& texture) except;
+			BasicMaterial(const graphics::GraphicsTexturePtr& texture, const graphics::GraphicsSamplerPtr& sampler =  nullptr) except;
 			~BasicMaterial() noexcept;
 
 			void setup() except;
@@ -20,7 +20,7 @@ namespace octoon
 			void setTransform(const math::float4x4& m) noexcept override;
 			void setViewProjection(const math::float4x4& vp) noexcept override;
 			void setBaseColor(const math::float4& texture) noexcept;
-			void setTexture(const graphics::GraphicsTexturePtr& texture) noexcept;
+			void setTexture(const graphics::GraphicsTexturePtr& texture, const graphics::GraphicsSamplerPtr& sampler = nullptr) noexcept;
 
 			const graphics::GraphicsPipelinePtr& getPipeline() const noexcept override;
 			const graphics::GraphicsDescriptorSetPtr& getDescriptorSet() const noexcept override;

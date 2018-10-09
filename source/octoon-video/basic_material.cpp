@@ -11,10 +11,10 @@ namespace octoon
 			this->setup();
 		}
 
-		BasicMaterial::BasicMaterial(const graphics::GraphicsTexturePtr& texture) except
+		BasicMaterial::BasicMaterial(const graphics::GraphicsTexturePtr& texture, const graphics::GraphicsSamplerPtr& sampler) except
 		{
 			this->setup();
-			this->setTexture(texture);
+			this->setTexture(texture, sampler);
 		}
 
 		void
@@ -63,7 +63,7 @@ namespace octoon
 			void main()
 			{
 				oTexcoord0 = TEXCOORD0;
-				gl_Position = proj * model * (POSITION0 * vec4(1,-1,1,1));
+				gl_Position = proj * model * (POSITION0 * vec4(1,1,1,1));
 			})";
 
 			const char* frag = R"(#version 330
@@ -159,17 +159,17 @@ namespace octoon
 		}
 
 		void
-		BasicMaterial::setTexture(const graphics::GraphicsTexturePtr& texture) noexcept
+		BasicMaterial::setTexture(const graphics::GraphicsTexturePtr& texture, const graphics::GraphicsSamplerPtr& sampler) noexcept
 		{
 			if (texture)
 			{
 				hasTexture_->uniform1b(true);
-				decal_->uniformTexture(texture);
+				decal_->uniformTexture(texture, sampler);
 			}
 			else
 			{
 				hasTexture_->uniform1b(false);
-				decal_->uniformTexture(texture);
+				decal_->uniformTexture(texture, sampler);
 			}
 		}
 

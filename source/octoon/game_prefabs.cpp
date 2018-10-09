@@ -87,7 +87,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makeCircle(radius, segments, thetaStart, thetaLength));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -96,7 +96,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makePlane(width, height, widthSegments, heightSegments));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -105,7 +105,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makePlane(width, height, depth, widthSegments, heightSegments, depthSegments, u, v, udir, vdir));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -114,7 +114,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makePlaneWireframe(width, height, depth, widthSegments, heightSegments, depthSegments, u, v, udir, vdir, clear));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -123,7 +123,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makeFloor(width, height, widthSegments, heightSegments));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -132,7 +132,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makeNoise(width, height, widthSegments, heightSegments));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -141,7 +141,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makeCube(width, height, depth, widthSegments, heightSegments, depthSegments));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -150,7 +150,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makeCubeWireframe(width, height, depth, widthSegments, heightSegments, depthSegments));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -159,7 +159,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makeRing(innerRadius, outerRadius, thetaSegments, phiSegments, thetaStart, thetaLength));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -168,7 +168,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makeSphere(radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -177,7 +177,7 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makeVolumes(fovy, znear, zfar));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
 	}
 
@@ -186,8 +186,18 @@ namespace octoon
 	{
 		auto object = GameObject::create("GameObject");
 		object->addComponent<MeshFilterComponent>(model::makeCone(radius, height, segments, thetaStart, thetaLength));
-		object->addComponent<MeshRendererComponent>(std::make_shared<GGXMaterial>());
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
 		return object;
+	}
+
+	GameObjectPtr
+	GamePrefabs::createCylinder(float topRadius, float bottomRadius, float height, std::uint32_t segments, float thetaStart, float thetaLength) noexcept
+	{
+		auto object = GameObject::create("GameObject");
+		object->addComponent<MeshFilterComponent>(model::makeCylinder(topRadius, bottomRadius, height, segments, thetaStart, thetaLength));
+		object->addComponent<MeshRendererComponent>(std::make_shared<BasicMaterial>());
+		return object;
+
 	}
 
 	GameObjectPtr 
@@ -358,7 +368,7 @@ namespace octoon
 		textureDesc.setMipNums(image.mipLevel());
 		textureDesc.setLayerBase(image.layerBase());
 		textureDesc.setLayerNums(image.layerLevel());
-
+		
 		auto texture = RenderSystem::instance()->createTexture(textureDesc);
 		if (!texture)
 			return nullptr;
@@ -367,5 +377,20 @@ namespace octoon
 			textureCaches_[path] = texture;
 
 		return texture;
+	}
+
+	graphics::GraphicsSamplerPtr
+	GamePrefabs::createSampler(GraphicsSamplerWrap wrap, GraphicsSamplerFilter filter, GraphicsSamplerAnis anis) except
+	{
+		graphics::GraphicsSamplerDesc samplerDesc;
+		samplerDesc.setSamplerWrap(wrap);
+		samplerDesc.setSamplerFilter(filter, filter);
+		samplerDesc.setSamplerAnis(anis);
+
+		auto sampler = RenderSystem::instance()->createSampler(samplerDesc);
+		if (!sampler)
+			return nullptr;
+
+		return sampler;
 	}
 }

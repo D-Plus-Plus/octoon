@@ -837,10 +837,10 @@ namespace octoon
 			this->clear();
 
 			_vertices.emplace_back(0.0f, 0.0f, 0.0f);
-			_vertices.emplace_back(0.0f, 0.0f, -height);
+			_vertices.emplace_back(0.0f, -height, 0.0f);
 
 			_normals.emplace_back(0.0f, 0.0f, 0.0f);
-			_normals.emplace_back(0.0f, 0.0f, -1.0f);
+			_normals.emplace_back(0.0f, -1.0f, 0.0f);
 
 			_texcoords[0].emplace_back(0.0f, 0.0f);
 			_texcoords[0].emplace_back(1.0f, 1.0f);
@@ -849,15 +849,13 @@ namespace octoon
 
 			for (std::uint32_t i = 0; i <= segments; i++)
 			{
-				float sin;
-				float cos;
-
+				float sin, cos;
 				math::sinCos(&sin, &cos, thetaStart + i * segment);
 
 				Vector3 v;
 				v.x = radius * cos;
-				v.y = -radius * sin;
-				v.z = 0;
+				v.y = 0;
+				v.z = -radius * sin;
 
 				_vertices.push_back(v);
 				_normals.push_back(math::normalize(v));
@@ -885,6 +883,63 @@ namespace octoon
 				_indices.push_back(v3);
 				_indices.push_back(v2);
 				_indices.push_back(v1);
+			}
+
+			this->computeTangents();
+			this->computeBoundingBox();
+		}
+
+		void 
+		Mesh::makeCylinder(float topRadius, float bottomRadius, float height, std::uint32_t segments, float thetaStart, float thetaLength) noexcept
+		{
+			this->clear();
+
+			float segment = thetaLength / segments;
+
+			for (std::uint32_t i = 0; i <= segments; i++)
+			{
+				float sin, cos;
+				math::sinCos(&sin, &cos, thetaStart + i * segment);
+
+				Vector3 v;
+				v.x = bottomRadius * cos;
+				v.y = 0;
+				v.z = -bottomRadius * sin;
+
+				_vertices.push_back(v);
+				_normals.push_back(math::normalize(v));
+				_texcoords[0].emplace_back(((1.0f - i / (float)segments)), 1.0f);
+			}
+
+			for (std::uint32_t i = 0; i <= segments; i++)
+			{
+				float sin, cos;
+				math::sinCos(&sin, &cos, thetaStart + i * segment);
+
+				Vector3 v;
+				v.x = topRadius * cos;
+				v.y = height;
+				v.z = -topRadius * sin;
+
+				_vertices.push_back(v);
+				_normals.push_back(math::normalize(v));
+				_texcoords[0].emplace_back((1.0f - i / (float)segments), 0.0f);
+			}
+
+			for (std::uint32_t i = 0; i <= segments; i++)
+			{
+				std::uint32_t v1 = i;
+				std::uint32_t v2 = i + 1;
+				std::uint32_t v3 = segments + i;
+				std::uint32_t v4 = segments + i + 1;
+
+				_indices.push_back(v1);
+				_indices.push_back(v3);
+				_indices.push_back(v4);
+
+				_indices.push_back(v1);
+				_indices.push_back(v4);
+				_indices.push_back(v2);
 			}
 
 			this->computeTangents();

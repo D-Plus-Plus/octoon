@@ -78,6 +78,7 @@ namespace octoon
 			void makeSphere(float radius, std::uint32_t widthSegments = 32, std::uint32_t heightSegments = 24, float phiStart = 0.0, float phiLength = math::PI_2, float thetaStart = 0, float thetaLength = math::PI) noexcept;
 			void makeVolumes(float fovy, float znear, float zfar) noexcept;
 			void makeCone(float radius, float height, std::uint32_t segments = 32, float thetaStart = 0, float thetaLength = math::PI_2) noexcept;
+			void makeCylinder(float topRadius, float bottomRadius, float height, std::uint32_t segments = 32, float thetaStart = 0, float thetaLength = math::PI_2) noexcept;
 
 			bool combineMeshes(const Mesh& mesh, bool force = false) noexcept;
 			bool combineMeshes(const CombineMesh instances[], std::size_t numInstance, bool merge) noexcept;
@@ -197,6 +198,13 @@ namespace octoon
 		{
 			Mesh mesh;
 			mesh.makeCone(radius, height, segments, thetaStart, thetaLength);
+			return mesh;
+		}
+
+		inline Mesh makeCylinder(float topRadius, float bottomRadius, float height, std::uint32_t segments = 32, float thetaStart = 0, float thetaLength = math::PI_2) noexcept
+		{
+			Mesh mesh;
+			mesh.makeCylinder(topRadius, bottomRadius, height, segments, thetaStart, thetaLength);
 			return mesh;
 		}
 	}
