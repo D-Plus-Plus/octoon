@@ -1,6 +1,5 @@
 #include <octoon/video/material.h>
 #include <octoon/graphics/graphics.h>
-#include <d3dx11effect.h>
 
 namespace octoon
 {
