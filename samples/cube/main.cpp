@@ -65,13 +65,13 @@ public:
 
 				lightDir = octoon::math::normalize(lightDir);
 
-				material_ = std::dynamic_pointer_cast<octoon::video::GGXMaterial>(this->getComponent<octoon::RenderComponent>()->getMaterial());
+				/*material_ = std::dynamic_pointer_cast<octoon::video::BasicMaterial>(this->getComponent<octoon::RenderComponent>()->getMaterial());
 				material_->setLightDir(lightDir);
 				material_->setBaseColor(baseColor);
 				material_->setSpecularColor(specularColor);
 				material_->setAmbientColor(ambientColor);
 				material_->setSmoothness(smoothness);
-				material_->setMetalness(metalness);
+				material_->setMetalness(metalness);*/
 
 				octoon::imgui::treePop();
 			}
@@ -87,7 +87,7 @@ public:
 
 private:
 	octoon::GameObjectPtr camera_;
-	std::shared_ptr<octoon::video::GGXMaterial> material_;
+	std::shared_ptr<octoon::video::BasicMaterial> material_;
 };
 
 int main(int argc, const char* argv[])
