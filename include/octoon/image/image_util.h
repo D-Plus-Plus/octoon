@@ -30,6 +30,15 @@ namespace octoon
 		template<typename _Tx, typename size_t = std::uint32_t, typename channel_t = std::uint8_t>
 		void flipHorizontal(_Tx* data, size_t w, size_t h, channel_t channel) noexcept
 		{
+			for (size_t j = 0; j < h; j++)
+				for (size_t i = 0; i < w / 2; i++)
+					for (channel_t k = 0; k < channel; k++)
+						std::swap(data[(j * w + i) * channel + k], data[(j * w + (w - 1 - i) * channel) + k]);
+		}
+
+		template<typename _Tx, typename size_t = std::uint32_t, typename channel_t = std::uint8_t>
+		void flipVertical(_Tx* data, size_t w, size_t h, channel_t channel) noexcept
+		{
 			for (size_t j = 0; j < h / 2; j++)
 				for (size_t i = 0; i < w * channel; i++)
 					std::swap(data[i + j * (w * channel)], data[(h - j - 1) * (w * channel) + i]);

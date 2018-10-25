@@ -73,19 +73,19 @@ namespace octoon
 			this->create(format, src);
 		}
 
-		Image::Image(istream& stream, const char* type) noexcept
+		Image::Image(istream& stream, const char* type) noexcept(false)
 			: Image()
 		{
 			this->load(stream, type);
 		}
 
-		Image::Image(const char* filepath, const char* type) noexcept
+		Image::Image(const char* filepath, const char* type) noexcept(false)
 			: Image()
 		{
 			this->load(filepath, type);
 		}
 
-		Image::Image(const std::string& filepath, const char* type) noexcept
+		Image::Image(const std::string& filepath, const char* type) noexcept(false)
 			: Image()
 		{
 			this->load(filepath, type);
@@ -309,69 +309,145 @@ namespace octoon
 		}
 
 		const std::uint8_t*
-		Image::data(std::size_t i = 0) const noexcept
+		Image::data(std::size_t i) const noexcept
 		{
 			return data_.data() + i;
 		}
 
-		bool
-		Image::load(istream& stream, const char* type) noexcept
+		void 
+		Image::flipVertical() noexcept(false)
+		{
+			switch (format_.value_type())
+			{
+			case value_t::SNorm:
+			case value_t::UNorm:
+			case value_t::SInt:
+			case value_t::UInt:
+			case value_t::SScaled:
+			case value_t::UScaled:
+			{
+				if (format_.type_size() == 1)
+					image::flipVertical<std::uint8_t>((std::uint8_t*)this->data(), this->width(), this->height(), this->format().channel());
+				else if (format_.type_size() == 2)
+					image::flipVertical<std::uint16_t>((std::uint16_t*)this->data(), this->width(), this->height(), this->format().channel());
+				else if (format_.type_size() == 4)
+					image::flipVertical<std::uint32_t>((std::uint32_t*)this->data(), this->width(), this->height(), this->format().channel());
+				else
+					throw std::runtime_error("Not support yet.");
+			}
+			break;
+			case value_t::Float:
+				image::flipVertical<float>((float*)this->data(), this->width(), this->height(), this->format().channel());
+				break;
+			default:
+				throw std::runtime_error("Not support yet.");
+				break;
+			}
+		}
+
+		void 
+		Image::flipHorizontal() noexcept(false)
+		{
+			switch (format_.value_type())
+			{
+			case value_t::SNorm:
+			case value_t::UNorm:
+			case value_t::SInt:
+			case value_t::UInt:
+			case value_t::SScaled:
+			case value_t::UScaled:
+			{
+				if (format_.type_size() == 1)
+					image::flipHorizontal<std::uint8_t>((std::uint8_t*)this->data(), this->width(), this->height(), this->format().channel());
+				else if (format_.type_size() == 2)
+					image::flipHorizontal<std::uint16_t>((std::uint16_t*)this->data(), this->width(), this->height(), this->format().channel());
+				else if (format_.type_size() == 4)
+					image::flipHorizontal<std::uint32_t>((std::uint32_t*)this->data(), this->width(), this->height(), this->format().channel());
+				else
+					throw std::runtime_error("Not support yet.");
+			}
+			break;
+			case value_t::Float:
+				image::flipHorizontal<float>((float*)this->data(), this->width(), this->height(), this->format().channel());
+				break;
+			default:
+				throw std::runtime_error("Not support yet.");
+				break;
+			}
+		}
+
+		void
+		Image::load(istream& stream, const char* type) noexcept(false)
 		{
 			if (stream.good())
 			{
 				ImageLoaderPtr impl = image::findHandler(stream, type);
 				if (impl)
-				{
-					if (impl->doLoad(stream, *this))
-						return true;
-				}
+					impl->doLoad(stream, *this);
+				else
+					throw std::runtime_error(std::string(R"(Cannot find the image handler ")") + type + R"(")");
 			}
-
-			return false;
+			else
+			{
+				throw std::runtime_error("bad stream");
+			}
 		}
 
-		bool
-		Image::load(const char* filepath, const char* type) noexcept
+		void
+		Image::load(const char* filepath, const char* type) noexcept(false)
 		{
 			io::ifstream stream(filepath);
-			return this->load(stream, type);
+			if (stream)
+				this->load(stream, type);
+			else
+				throw std::runtime_error(std::string("Failed to open the file ") + filepath);
 		}
 
-		bool
-		Image::load(const std::string& filepath, const char* type) noexcept
+		void
+		Image::load(const std::string& filepath, const char* type) noexcept(false)
 		{
 			io::ifstream stream(filepath);
-			return this->load(stream, type);
+			if (stream)
+				this->load(stream, type);
+			else
+				throw std::runtime_error("Failed to open the file " + filepath);
 		}
 
-		bool
-		Image::save(ostream& stream, const char* type) noexcept
+		void
+		Image::save(ostream& stream, const char* type) noexcept(false)
 		{
 			if (stream.good())
 			{
 				ImageLoaderPtr impl = image::findHandler(type);
 				if (impl)
-				{
-					if (impl->doSave(stream, *this))
-						return true;
-				}
+					impl->doSave(stream, *this);
+				else
+					throw std::runtime_error(std::string(R"(Cannot find the image handler ")") + type + R"(")");
 			}
-
-			return false;
+			else
+			{
+				throw std::runtime_error("bad stream");
+			}
 		}
 
-		bool
-		Image::save(const char* filepath, const char* type) noexcept
+		void
+		Image::save(const char* filepath, const char* type) noexcept(false)
 		{
 			io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
-			return this->save(stream, type);
+			if (stream)
+				return this->save(stream, type);
+			else
+				throw std::runtime_error(std::string("Failed to open the file: ") + filepath);
 		}
 
-		bool
-		Image::save(const std::string& filepath, const char* type) noexcept
+		void
+		Image::save(const std::string& filepath, const char* type) noexcept(false)
 		{
 			io::ofstream stream(filepath, io::ios_base::in | io::ios_base::out);
-			return this->save(stream, type);
+			if (stream)
+				this->save(stream, type);
+			else
+				throw std::runtime_error("Failed to open the file: " + filepath);
 		}
 	}
 }

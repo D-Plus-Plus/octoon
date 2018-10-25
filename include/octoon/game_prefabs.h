@@ -4,6 +4,7 @@
 #include <octoon/game_types.h>
 #include <octoon/runtime/singleton.h>
 #include <octoon/graphics/graphics_types.h>
+#include <octoon/image/image.h>
 
 #include <map>
 
@@ -42,6 +43,7 @@ namespace octoon
 		GameObjectPtr createSprite(const graphics::GraphicsTexturePtr& texture, float w, float h) except;
 		GameObjectPtr createSpriteSquare(float w, float h) except;
 
+		graphics::GraphicsTexturePtr createTexture(const image::Image& image) except;
 		graphics::GraphicsTexturePtr createTexture(const std::string& path, bool cache = true) except;
 		graphics::GraphicsSamplerPtr createSampler(graphics::GraphicsSamplerWrap wrap, graphics::GraphicsSamplerFilter filter, graphics::GraphicsSamplerAnis anis = graphics::GraphicsSamplerAnis::Anis0) except;
 

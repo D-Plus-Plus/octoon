@@ -301,22 +301,8 @@ namespace octoon
 	}
 
 	graphics::GraphicsTexturePtr
-	GamePrefabs::createTexture(const std::string& path, bool cache) except
+	GamePrefabs::createTexture(const image::Image& image) except
 	{
-		assert(!path.empty());
-
-		auto it = textureCaches_.find(path);
-		if (it != textureCaches_.end())
-			return (*it).second;
-
-		vstream stream;
-		if (!stream.open(path))
-			throw runtime::runtime_error::create("Failed to open file :" + path);
-
-		Image image;
-		if (!image.load(stream))
-			throw runtime::runtime_error::create("Unknown stream:" + path);
-
 		GraphicsFormat format = GraphicsFormat::Undefined;
 		switch (image.format())
 		{
@@ -355,7 +341,7 @@ namespace octoon
 		case Format::R32G32B32SFloat: format = GraphicsFormat::R32G32B32SFloat; break;
 		case Format::R32G32B32A32SFloat: format = GraphicsFormat::R32G32B32A32SFloat; break;
 		default:
-			throw runtime::runtime_error::create("This image type is not supported by this function:" + path);
+			throw runtime::runtime_error::create("The image format is not supported");
 		}
 
 		GraphicsTextureDesc textureDesc;
@@ -368,11 +354,30 @@ namespace octoon
 		textureDesc.setMipNums(image.mipLevel());
 		textureDesc.setLayerBase(image.layerBase());
 		textureDesc.setLayerNums(image.layerLevel());
-		
+
 		auto texture = RenderSystem::instance()->createTexture(textureDesc);
 		if (!texture)
 			return nullptr;
 
+		return texture;
+	}
+
+	graphics::GraphicsTexturePtr
+	GamePrefabs::createTexture(const std::string& path, bool cache) except
+	{
+		assert(!path.empty());
+
+		auto it = textureCaches_.find(path);
+		if (it != textureCaches_.end())
+			return (*it).second;
+
+		vstream stream;
+		if (!stream.open(path))
+			throw runtime::runtime_error::create("Failed to open file :" + path);
+
+		Image image(stream);
+	
+		auto texture = this->createTexture(image);
 		if (cache)
 			textureCaches_[path] = texture;
 

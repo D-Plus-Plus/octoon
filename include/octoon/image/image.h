@@ -18,9 +18,9 @@ namespace octoon
 			Image(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth) except;
 			Image(Format format, std::uint32_t width, std::uint32_t height, std::uint32_t depth, std::uint32_t mipLevel, std::uint32_t layerLevel, std::uint32_t mipBase = 0, std::uint32_t layerBase = 0) except;
 			Image(Format format, const Image& src) except;
-			explicit Image(istream& stream, const char* type = nullptr) noexcept;
-			explicit Image(const char* filepath, const char* type = nullptr) noexcept;
-			explicit Image(const std::string& filepath, const char* type = nullptr) noexcept;
+			explicit Image(istream& stream, const char* type = nullptr) noexcept(false);
+			explicit Image(const char* filepath, const char* type = nullptr) noexcept(false);
+			explicit Image(const std::string& filepath, const char* type = nullptr) noexcept(false);
 			~Image() noexcept;
 
 			bool create(Format format, std::uint32_t width, std::uint32_t height) except;
@@ -47,14 +47,17 @@ namespace octoon
 			const std::uint8_t* data() const noexcept;
 			const std::uint8_t* data(std::size_t i) const noexcept;
 
-		public:
-			bool load(istream& stream, const char* type = nullptr) noexcept;
-			bool load(const char* filepath, const char* type = nullptr) noexcept;
-			bool load(const std::string& filepath, const char* type = nullptr) noexcept;
+			void flipVertical() noexcept(false);
+			void flipHorizontal() noexcept(false);
 
-			bool save(ostream& stream, const char* type = "tga") noexcept;
-			bool save(const char* filepath, const char* type = "tga") noexcept;
-			bool save(const std::string& filepath, const char* type = "tga") noexcept;
+		public:
+			void load(istream& stream, const char* type = nullptr) noexcept(false);
+			void load(const char* filepath, const char* type = nullptr) noexcept(false);
+			void load(const std::string& filepath, const char* type = nullptr) noexcept(false);
+
+			void save(ostream& stream, const char* type = "tga") noexcept(false);
+			void save(const char* filepath, const char* type = "tga") noexcept(false);
+			void save(const std::string& filepath, const char* type = "tga") noexcept(false);
 
 		private:
 			Format format_;
