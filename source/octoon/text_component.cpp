@@ -1,6 +1,7 @@
 #include <octoon/text_component.h>
 #include <octoon/model/text_meshing.h>
 #include <algorithm>
+#include <string.h>
 
 namespace octoon
 {
