@@ -1,6 +1,7 @@
 #include "file_controller.h"
 
 #include <octoon/octoon.h>
+#include <cstring>
 #include "../libs/nativefiledialog/nfd.h"
 
 std::vector<const char*> g_SupportedProject = { "pmm" };

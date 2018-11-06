@@ -49,8 +49,17 @@ SET(NATIVE_FILED_DIALOG_LIST
 	libs/nativefiledialog/nfd.h
 	libs/nativefiledialog/nfd_common.c
 	libs/nativefiledialog/nfd_win.cpp
+	libs/nativefiledialog/nfd_gtk.cpp
 )
 SOURCE_GROUP("editor\\libs\\NativeFiledDialog" FILES ${NATIVE_FILED_DIALOG_LIST})
+
+IF(NOT OCTOON_BUILD_PLATFORM_WINDOWS)
+	LIST(REMOVE_ITEM NATIVE_FILED_DIALOG_LIST "libs/nativefiledialog/nfd_win.cpp")
+ENDIF()
+
+IF(NOT OCTOON_BUILD_PLATFORM_LINUX)
+	LIST(REMOVE_ITEM NATIVE_FILED_DIALOG_LIST "libs/nativefiledialog/nfd_gtk.cpp")
+ENDIF()
 
 IF(NOT OCTOON_BUILD_SHARED_DLL AND OCTOON_BUILD_PLATFORM_WINDOWS)
 	ADD_DEFINITIONS(-DOCTOON_STATIC)
