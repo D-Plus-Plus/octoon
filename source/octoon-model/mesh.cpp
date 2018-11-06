@@ -480,7 +480,7 @@ namespace octoon
 
 					_vertices.push_back(vec);
 					_normals.push_back(n);
-					_texcoords[0].emplace_back((float)ix / gridX, 1.0f - (float)iy / gridY);
+					_texcoords[0].emplace_back((float)ix / gridX, (float)iy / gridY);
 				}
 			}
 
@@ -558,7 +558,7 @@ namespace octoon
 
 					_vertices.push_back(vec);
 					_normals.push_back(n);
-					_texcoords[0].emplace_back((float)ix / gridX, 1.0f - (float)iy / gridY);
+					_texcoords[0].emplace_back((float)ix / gridX, (float)iy / gridY);
 				}
 			}
 
